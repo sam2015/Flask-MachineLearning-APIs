@@ -1,0 +1,86 @@
+<html>
+<head>
+	<title>Wiki_extractor</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<script src="http://cdn.zingchart.com/zingchart.min.js"></script>
+	<script src="http://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
+	<style type="text/css">
+	*{
+  		box-sizing: border-box;
+  		font-family : "verdana"
+	}
+	html,body{
+  		margin: 0px;
+	}
+
+	#controls{
+  		height: 68px;
+  		width: 100%;
+  		background-color : #5F7E87;
+  		color : white;
+  		padding: 10px;
+	}
+	</style>
+</head>
+<body ng-app="myApp">
+	<div ng-controller="MainController">
+		<div zingchart id="chart-1" zc-json="myJson" zc-width="100%" zc-height="500px"></div>
+		<div id="controls">
+			<section>
+				<label>Input Title :</label><input ng-model="title">
+				<button ng-click="addValues(title)">Submit</button>
+			</section>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+var app = angular.module('myApp',['zingchart-angularjs']);
+
+app.controller('MainController', function ($scope, $http) {
+	$scope.myJson = {
+  			"type": "hbar",
+  			"plotarea": {
+    		"adjust-layout":true
+  			},
+  			"scale-x": {
+    			"label":{ /* Scale Title */
+      				"text":"30 Most Frequrnt words",
+    			},
+    			"labels": []/* Scale Labels */
+  			},
+  			"series": [
+    			{"values":[]}
+    			]
+		}
+
+
+	$scope.addValues = function (title) {
+		console.log(title);
+        var url = "/wiki/" + title
+		$http.get(url)
+    		.then(function(response) {
+/*        		$scope.myJson.series[0].values = response.data.freq;
+        		console.log(response.data.label)
+        		$scope.myJson.scalex.labels = $scope.myJson.scalex.labels.concat(response.data.label); */
+
+        	$scope.myJson = {
+  			"type": "hbar",
+  			"plotarea": {
+    		"adjust-layout":true
+  			},
+  			"scale-x": {
+    			"label":{ /* Scale Title */
+      				"text":"30 Most Frequrnt words",
+    			},
+    			"labels": response.data.label/* Scale Labels */
+  			},
+  			"series": [
+    			{"values": response.data.freq }
+    			]
+		}
+
+			});
+		}
+});
+</script>
+</html>

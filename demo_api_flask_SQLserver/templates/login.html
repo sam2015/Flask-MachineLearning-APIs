@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login PAge</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <style>
+        body {
+          font: 10px sans-serif;
+        }
+        .axis line {
+          stroke: #000;
+        }
+        path {
+          fill: none;
+          stroke: #666;
+          stroke-width: 1px;
+        }
+
+        h1 {
+          text-align: center;
+          color: red;
+        }   
+    </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+</head>
+<body>
+  <div ng-app="Addapp" ng-controller = 'Addctrl'>
+    <h3 text-align='centre'>Login</h3>
+    <p><h6>username</h6> <input type="text" class="form-control" ng-model="x_name" placeholder='username'></p>
+    <p><h6>password</h6><input type="text" class="form-control" ng-model="y_name" placeholder='password'></p>
+    <button type="submit" class="btn btn-primary btn-block" ng-click = "login()"> Login </button>
+    <button type="submit" class="btn btn-primary btn-block" ng-click = "register()"> Signup </button>
+  </div>
+</body>
+<script>
+var FlaskAddApp = angular.module('Addapp', [])
+  .controller('Addctrl', function ($scope, $http, $window){
+    $scope.register = function () {
+      $window.location.href = 'http://127.0.0.1:5000/register'
+    }
+    $scope.Login = function () {
+      var url = "/signin/" + $scope.x_name + '/' + $scope.y_name
+      $http({
+        method: 'POST',
+        url: url
+      }).success(function (data) {
+        $window.location.href = 'http://127.0.0.1:5000/game_page'
+      })
+    };
+  });
+</script>
+</html>

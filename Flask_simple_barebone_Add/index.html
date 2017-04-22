@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sample Flask Angular App</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <style>
+        body {
+          font: 10px sans-serif;
+        }
+        .axis line {
+          stroke: #000;
+        }
+        path {
+          fill: none;
+          stroke: #666;
+          stroke-width: 1px;
+        }
+
+        h1 {
+          text-align: center;
+          color: red;
+        }   
+    </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+</head>
+<body>
+  <div ng-app="Addapp" ng-controller = 'Addctrl'>
+    <p>X : <input type="text" class="form-control" ng-model="x_name"></p>
+    <p>Y : <input type="text" class="form-control" ng-model="y_name"></p>
+    <button type="submit" class="btn btn-primary btn-block" ng-click = "Add()"> Submit </button>
+    <h1>{{ name }}</h1>
+  </div>
+</body>
+<script>
+var FlaskAddApp = angular.module('Addapp', [])
+  .controller('Addctrl', function ($scope, $http){
+    $scope.name = "Sam ready!!!!";
+    $scope.Add = function () {
+      var url = "/result?a=" + $scope.x_name + '&b=' + $scope.y_name
+      $http({
+        method: 'POST',
+        url: url
+      }).success(function (data) {
+        $scope.name = data.result
+      })
+    };
+  });
+</script>
+</html>
